@@ -21,4 +21,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: bilalq347/comfyui-worker:1.0.2
+          tags: bilalq347/comfyui-worker:1.0.3
