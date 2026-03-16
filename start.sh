@@ -5,7 +5,6 @@ NETWORK_MODELS="/runpod-volume/ComfyUI/models"
 COMFY_MODELS="/comfyui/models"
 
 echo "Checking for network volume at $VOLUME..."
-ls -la $VOLUME || echo "Volume not found or empty"
 
 if [ -d "$VOLUME" ]; then
     echo "Network volume found!"
@@ -27,13 +26,14 @@ if [ -d "$VOLUME" ]; then
                 fi
             done
         fi
-    else
-        echo "No ComfyUI models dir found at $NETWORK_MODELS"
-        echo "Contents of volume:"
-        ls -la $VOLUME
     fi
 else
     echo "No network volume found, using default model paths"
 fi
 
+# Start ComfyUI in the background (same way the base image does it)
+cd /comfyui
+python3 main.py --listen 127.0.0.1 --port 8188 &
+
+# Hand off to the RunPod handler
 exec python3 -u /handler.py
